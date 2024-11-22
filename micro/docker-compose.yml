@@ -1,0 +1,23 @@
+version: '3'
+services:
+  logica_jogo_service:
+    build:
+      context: ./logica_jogo_service
+    ports:
+      - "5000:5000"
+    networks:
+      - campo_minado_network  # Defina uma rede comum
+
+  frontend_service:
+    build:
+      context: ./frontend_service
+    ports:
+      - "80:80"
+    networks:
+      - campo_minado_network  # Rede compartilhada
+    depends_on:
+      - logica_jogo_service   # O frontend depende do logica_jogo_service para ser iniciado
+
+networks:
+  campo_minado_network:
+    driver: bridge  # Rede interna para comunicação entre contêineres
