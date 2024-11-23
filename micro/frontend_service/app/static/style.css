@@ -1,0 +1,99 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #333;
+}
+
+.campo {
+    display: grid;
+    grid-template-columns: repeat(5, 100px);  /* Valores padrão, serão sobrescritos */
+    grid-template-rows: repeat(5, 100px);     /* Valores padrão, serão sobrescritos */
+    gap: 5px;
+    background-color: #ddd;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.celula {
+    width: 100px;
+    height: 100px;
+    border: 2px solid #333;
+    background-color: #e3e3e3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.celula:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+}
+
+.mina {
+    background-color: #ff5c5c;
+    color: white;
+    background-image: url('/static/img/mina1.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.vitoria {
+    background-color: #4caf50;
+    color: white;
+}
+
+.perdeu {
+    background-color: #ff9800;
+    color: white;
+}
+
+.celula.X {
+    background-color: #f0f0f0;
+    color: #777;
+}
+
+.celula:active {
+    transform: scale(0.95);
+}
+
+/* Small screen adjustments */
+@media (max-width: 600px) {
+    .campo {
+        grid-template-columns: repeat(5, 100px);  /* Valores padrão, serão sobrescritos */
+        grid-template-rows: repeat(5, 100px);     /* Valores padrão, serão sobrescritos */
+        gap: 4px;
+    }
+
+    .celula {
+        width: 80px;
+        height: 80px;
+        font-size: 20px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}

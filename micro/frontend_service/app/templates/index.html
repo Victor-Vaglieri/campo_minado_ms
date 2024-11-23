@@ -4,197 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campo Minado</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 2rem;
-            color: #333;
-        }
-
-        .campo {
-            display: grid;
-            grid-template-columns: repeat({{ colunas }}, 100px);
-            grid-template-rows: repeat({{ linhas }}, 100px);
-            gap: 5px;
-            background-color: #ddd;
-            padding: 10px;
-            border-radius: 10px;
-        }
-
-        .celula {
-            width: 100px;
-            height: 100px;
-            border: 2px solid #333;
-            background-color: #e3e3e3;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.1s;
-        }
-
-        .celula:hover {
-            background-color: #f0f0f0;
-            transform: scale(1.05);
-        }
-
-        .mina {
-            background-color: #ff5c5c;
-            color: white;
-            background-image: url('{{ url_for('static', filename='img/mina1.png') }}');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .vitoria {
-            background-color: #4caf50;
-            color: white;
-        }
-
-        .perdeu {
-            background-color: #ff9800;
-            color: white;
-        }
-
-        .celula.X {
-            background-color: #f0f0f0;
-            color: #777;
-        }
-
-        .celula:active {
-            transform: scale(0.95);
-        }
-
-        /* Small screen adjustments */
-        @media (max-width: 600px) {
-            .campo {
-                grid-template-columns: repeat({{ colunas }}, 80px);
-                grid-template-rows: repeat({{ linhas }}, 80px);
-                gap: 4px;
-            }
-
-            .celula {
-                width: 80px;
-                height: 80px;
-                font-size: 20px;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div>
         <h1>Campo Minado</h1>
-        <div class="campo">
-            {% for i in range(linhas) %}
-                {% for j in range(colunas) %}
-                    <div class="celula X" id="celula_{{ i }}_{{ j }}" onclick="clicar({{ i }}, {{ j }})">
-                        X
-                    </div>
+
+        <!-- Adicionando o div para armazenar os dados de colunas e linhas -->
+        <div id="campo" data-colunas="{{ colunas }}" data-linhas="{{ linhas }}">
+            <div class="campo">
+                {% for i in range(linhas) %}
+                    {% for j in range(colunas) %}
+                        <div class="celula X" id="celula_{{ i }}_{{ j }}" onclick="clicar({{ i }}, {{ j }})">
+                            X
+                        </div>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            </div>
         </div>
     </div>
 
-    <script>
-        function clicar(linha, coluna) {
-            let celula = document.getElementById(`celula_${linha}_${coluna}`);
-            console.log(linha,coluna);
-            if (celula.classList.contains('revelada')) {
-                return; // Não faz nada se a célula já foi revelada
-            }
-            celula.classList.add('revelada');
-
-            fetch('http://127.0.0.1:5000/jogar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ linha: linha, coluna: coluna })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Resposta JSON:", data);
-                let status = data.status;
-                let campo = data.campo;
-
-                if (status === "vitoria") {
-                    alert("Você venceu!");
-                } else if (status === "perdeu") {
-                    setTimeout(() => {
-                        alert("Você perdeu!");
-                        revelarCampo(campo);
-                        reiniciarJogo();
-                    }, 1000);
-                } else {
-                    atualizarCampo(campo, linha, coluna);
-                }
-            })
-            .catch(error => console.error('Erro na requisição:', error));
-        }
-
-        function atualizarCampo(campo, linha, coluna) {
-            let celula = document.getElementById(`celula_${linha}_${coluna}`);
-
-            if (campo[linha][coluna] === -1) {
-                // Exibe a bomba
-                celula.classList.add('mina');
-            } else {
-                celula.innerText = campo[linha][coluna];
-                celula.classList.remove('X'); // Remove a classe X após o clique
-            }
-        }
-
-        function revelarCampo(campo) {
-            for (let i = 0; i < campo.length; i++) {
-                for (let j = 0; j < campo[i].length; j++) {
-                    let celula = document.getElementById(`celula_${i}_${j}`);
-                    if (campo[i][j] === -1) {
-                        // Exibe as minas
-                        celula.classList.add('mina');
-                    } else {
-                        celula.innerText = campo[i][j];
-                        celula.classList.remove('X');
-                    }
-                    celula.classList.add('revelada');
-                }
-            }
-        }
-
-        function reiniciarJogo() {
-            setTimeout(() => {
-                // Reinicia o campo (recarrega a página ou faz outra lógica de reinício)
-                location.reload(); // Recarrega a página para reiniciar o jogo
-            }, 2000); // Atraso de 2 segundos antes de reiniciar
-        }
-    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

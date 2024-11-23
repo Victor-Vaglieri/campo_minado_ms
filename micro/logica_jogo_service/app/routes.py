@@ -8,7 +8,7 @@ campo = None
 descoberto = set()
 linhas = 5
 colunas = 5
-num_minas = 8
+num_minas = 6
 
 @app.route('/criar_campo', methods=['GET'])
 def criar_novo_campo():

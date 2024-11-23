@@ -3,12 +3,12 @@ import random
 import sys
 
 # Configurações do jogo
-LARGURA = 800
-ALTURA = 800
+LARGURA = 1000
+ALTURA = 1000
 TAM_CELULA = 200
 LINHAS = ALTURA // TAM_CELULA
 COLUNAS = LARGURA // TAM_CELULA
-NUM_MINAS = 4
+NUM_MINAS = 6
 
 # Cores
 PRETO = (0, 0, 0)
@@ -59,7 +59,7 @@ def desenhar_campo(campo, descoberto):
                 pygame.draw.rect(tela, BRANCO, retangulo)
                 if campo[i][j] == -1:
                     # Desenha a imagem da mina
-                    tela.blit(pygame.transform.scale(pygame.image.load("mina"+str(random.randint(1,3))+".png"), (TAM_CELULA, TAM_CELULA)), retangulo)
+                    tela.blit(pygame.transform.scale(pygame.image.load("mina1.png"), (TAM_CELULA, TAM_CELULA)), retangulo)
                 elif campo[i][j] > 0:
                     # Centraliza o texto
                     fonte = pygame.font.Font(None, TAM_CELULA)
@@ -117,7 +117,6 @@ def jogo():
         if verificar_vitoria(campo, descoberto):
             desenhar_tela_final("Você Venceu!", VERDE)
             pygame.time.wait(3000)  # Aguarda 3 segundos antes de fechar
-            rodando = False
 
         # Eventos
         for evento in pygame.event.get():
@@ -134,7 +133,6 @@ def jogo():
                     desenhar_tela_final("Você Perdeu!", VERMELHO)
                     pygame.display.flip()  # Atualiza a tela
                     pygame.time.wait(2000)  # Aguarda 3 segundos antes de fechar
-                    rodando = False
                 else:
                     descoberto.add((linha, coluna))
 
