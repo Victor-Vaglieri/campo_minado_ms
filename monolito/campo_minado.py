@@ -117,7 +117,6 @@ def jogo():
         if verificar_vitoria(campo, descoberto):
             desenhar_tela_final("Você Venceu!", VERDE)
             pygame.time.wait(3000)  # Aguarda 3 segundos antes de fechar
-
         # Eventos
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -133,9 +132,10 @@ def jogo():
                     desenhar_tela_final("Você Perdeu!", VERMELHO)
                     pygame.display.flip()  # Atualiza a tela
                     pygame.time.wait(2000)  # Aguarda 3 segundos antes de fechar
+                    campo = criar_campo()
+                    descoberto = set()
                 else:
                     descoberto.add((linha, coluna))
-
         # Atualiza a tela
         pygame.display.flip()
 
