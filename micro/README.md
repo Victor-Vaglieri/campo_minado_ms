@@ -61,4 +61,4 @@ Para limpar containers, imagens, volumes e redess, você pode usar:
 docker system prune -a
 ```
 
-## ## [video](https://youtu.be/uBJurVwt9YQ)
+## [video](https://youtu.be/uBJurVwt9YQ)
