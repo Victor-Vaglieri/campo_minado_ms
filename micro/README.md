@@ -60,3 +60,5 @@ Para limpar containers, imagens, volumes e redess, você pode usar:
 ```cod2
 docker system prune -a
 ```
+
+## ## [video](https://youtu.be/uBJurVwt9YQ)
