@@ -21,3 +21,5 @@ para executar o programa, basta rodar o seguinte comando no terminal:
 ```cod
 python campo_minado.py
 ```
+
+## [video](https://youtu.be/6hToINk6BZ0)
